@@ -1,3 +1,14 @@
 from django.contrib import admin
 
-# Register your models here.
+from user.models import User
+from news.models import News
+from comments.models import Comment
+
+
+models = [
+    User,
+    News,
+    Comment
+]
+
+admin.site.register(models)

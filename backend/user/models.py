@@ -35,15 +35,13 @@ class User(AbstractUser):
         unique=True,
         validators=[EmailValidator],
     )
-    first_name = models.TextField('Имя', max_length=150, blank=True)
-    last_name = models.TextField('Фамилия', max_length=150, blank=True)
     role = models.CharField(
         'Роль', max_length=30, choices=USER_ROLE, default='user'
     )
 
     password = models.CharField('Пароль', max_length=150, blank=False)
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'last_name', 'first_name']
+    # USERNAME_FIELD = 'email'
+    # REQUIRED_FIELDS = ['username', 'last_name', 'first_name']
 
     @property
     def is_user(self):
