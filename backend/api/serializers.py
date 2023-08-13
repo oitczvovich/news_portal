@@ -35,6 +35,10 @@ class UserRegistrSerializer(serializers.ModelSerializer):
 
 
 class NewsSerializer (serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True,
+    )
 
     class Meta:
         model = News
@@ -42,6 +46,14 @@ class NewsSerializer (serializers.ModelSerializer):
 
 
 class CommentsSerializer (serializers.ModelSerializer):
+    news = serializers.SlugRelatedField(
+        slug_field='text',
+        read_only=True,
+    )
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True,
+    )
 
     class Meta:
         model = News

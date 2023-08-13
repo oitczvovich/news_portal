@@ -29,6 +29,8 @@ class News(models.Model):
         verbose_name='Дата публикации'
     )
 
+
+
     class Meta:
         ordering = ('-id',)
         verbose_name = 'Новость'
