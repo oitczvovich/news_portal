@@ -9,7 +9,18 @@ from news.models import News
 from comments.models import Comment, Like
 
 
-class UserRegistrSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'role'
+        ]
+
+
+class UserRegistrSerializer(UserSerializer):
     """Сериализатор для регистраци пользователей."""
 
     username = serializers.CharField(
@@ -34,18 +45,24 @@ class UserRegistrSerializer(serializers.ModelSerializer):
         return user
 
 
-class NewsSerializer (serializers.ModelSerializer):
+class NewsSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         default=serializers.CurrentUserDefault(),
         slug_field='username',
         read_only=True,
     )
-
     comments = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = News
         fields = ('author', 'title', 'text', 'comments')
+
+
+class CreatNewsSerializer(NewsSerializer):
+
+    class Meta:
+        model = News
+        fields = ('author', 'title', 'text')
 
 
 class CommentsSerializer (serializers.ModelSerializer):

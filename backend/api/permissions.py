@@ -5,7 +5,7 @@ class IsAdminOrAuthor(BasePermission):
     """Права доступа у администратора и автора."""
     def has_object_permission(self, request, view, obj):
         return (request.method in SAFE_METHODS
-                or request.user == obj.author or request.user.is_superuser)
+                or request.user == obj.author or request.user.role == 'admin')
 
 
 class IsOwnerOrReadOnly(BasePermission):
@@ -19,6 +19,5 @@ class IsAdmin(BasePermission):
     Может создавать и удалять. Может назначать роли пользователям."""
 
     def has_permission(self, request, view):
-        return request.user.is_authenticated and (
-            request.user.is_admin or request.user.is_superuser
-        )
+        return request.user.is_authenticated and request.user.role == 'admin'
+        

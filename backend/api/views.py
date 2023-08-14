@@ -24,16 +24,32 @@ from .serializers import (
     NewsSerializer, 
     UserRegistrSerializer,
     CommentsSerializer,
+    CreatNewsSerializer,
     # LikeSerializer
 )
 
 
 class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.all()
-    serializer_class = NewsSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreatNewsSerializer
+        return NewsSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    def get_permissions(self):
+        if self.action == 'destroy':
+            return (IsAdminOrAuthor(),)
+        return super().get_permissions()
+
+    def destroy(self, request, *args, **kwargs):
+        news = self.get_object()
+        news.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class CommentsViewSet(viewsets.ModelViewSet):
@@ -43,7 +59,7 @@ class CommentsViewSet(viewsets.ModelViewSet):
         news = get_object_or_404(News, pk=self.kwargs.get('news_id'))
         print(news)
         return news.comments.all()
-    
+
     def perform_create(self, serializer):
         news_id = self.kwargs.get('news_id')
         news = get_object_or_404(News, id=news_id)
