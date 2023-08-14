@@ -40,8 +40,9 @@ class User(AbstractUser):
     )
 
     password = models.CharField('Пароль', max_length=150, blank=False)
-    # USERNAME_FIELD = 'email'
-    # REQUIRED_FIELDS = ['username', 'last_name', 'first_name']
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     @property
     def is_user(self):

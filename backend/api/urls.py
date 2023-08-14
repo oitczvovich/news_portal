@@ -20,6 +20,9 @@ router_v1.register('news', NewsViewSet, basename='news')
 
 urlpatterns = [
     path('', include(router_v1.urls)),
-    path('auth/', include('djoser.urls.authtoken')),
+    # path('auth/', include('djoser.urls.authtoken')),
+    path('auth/', include('djoser.urls')),
+    # JWT-эндпоинты, для управления JWT-токенами:
+    path('auth/', include('djoser.urls.jwt')),
     path('v1/', include(router_v1.urls))
 ]

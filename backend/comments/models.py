@@ -1,4 +1,3 @@
-from django.contrib.auth.models import AbstractUser
 from django.core.validators import (
     EmailValidator,
     MaxValueValidator,
@@ -13,19 +12,19 @@ from news.models import News
 
 class Comment(models.Model):
     """Модель комментариев."""
-
     news = models.ForeignKey(
         News,
         related_name='comments',
         on_delete=models.CASCADE,
-        verbose_name='Новость',
+        verbose_name='Отзыв',
     )
+
     text = models.TextField(
         verbose_name='Комментарий',
     )
     author = models.ForeignKey(
         User,
-        related_name='comments',
+        related_name='author',
         on_delete=models.CASCADE,
         verbose_name='Автор комментария',
     )
@@ -38,7 +37,11 @@ class Comment(models.Model):
         verbose_name_plural = 'Комментарии'
 
     def __str__(self):
-        return self.text[:42]
+        return f'{self.author}: {self.text} - {self.pub_date}' 
+
+
+class ComentList(models.Model):
+    pass
 
 
 class Like(models.Model):
@@ -56,7 +59,6 @@ class Like(models.Model):
         related_name='like',
         verbose_name='Пользователь',
     )
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [

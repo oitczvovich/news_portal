@@ -36,13 +36,16 @@ class UserRegistrSerializer(serializers.ModelSerializer):
 
 class NewsSerializer (serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
+        default=serializers.CurrentUserDefault(),
         slug_field='username',
         read_only=True,
     )
 
+    comments = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = News
-        fields = ('author', 'title', 'text')
+        fields = ('author', 'title', 'text', 'comments')
 
 
 class CommentsSerializer (serializers.ModelSerializer):
@@ -56,5 +59,5 @@ class CommentsSerializer (serializers.ModelSerializer):
     )
 
     class Meta:
-        model = News
+        model = Comment
         fields = ('news', 'author', 'text')
