@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
@@ -8,6 +9,7 @@ from rest_framework import (
     permissions,
     status,
     viewsets,
+    generics
 )
 
 from .permissions import (
@@ -21,16 +23,18 @@ from user.models import User
 from comments.models import Comment, Like
 from .pagination import PageNumberPagination
 from .serializers import (
-    NewsSerializer, 
+    NewsSerializer,
     UserRegistrSerializer,
     CommentsSerializer,
     CreatNewsSerializer,
-    # LikeSerializer
+    LikeSerializer
 )
+from .utils import add_or_del_like
 
 
 class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.all()
+    serializer_class = NewsSerializer
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -50,6 +54,19 @@ class NewsViewSet(viewsets.ModelViewSet):
         news.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    @action(
+        methods=['get', 'delete'],
+        detail=True,
+        url_path='like',
+    )
+    def like(self, request, pk):
+        return add_or_del_like(
+            self,
+            id=pk,
+            request=request,
+            serializer=LikeSerializer,
+            model=Like
+        )
 
 
 class CommentsViewSet(viewsets.ModelViewSet):
@@ -57,7 +74,6 @@ class CommentsViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         news = get_object_or_404(News, pk=self.kwargs.get('news_id'))
-        print(news)
         return news.comments.all()
 
     def perform_create(self, serializer):
@@ -65,14 +81,4 @@ class CommentsViewSet(viewsets.ModelViewSet):
         news = get_object_or_404(News, id=news_id)
         serializer.save(author=self.request.user, news=news)
 
-
-# class LikeViewSet(viewsets.ModelViewSet):
-#     serializer_class = LikeSerializer
-
-#     def get_queryset(self):
-#         totatl_like = get_object_or_404(Like, news_id=self.kwargs.get('news_id'))
-#         return totatl_like.object.all()
-
-#     def delete(self):
-#         like = get_object_or_404(Like, news_id=self.kwargs.get('news_id'))
-#         # like.object.delete()
+#TODO сделать delete коментариев

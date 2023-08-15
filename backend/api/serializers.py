@@ -78,3 +78,18 @@ class CommentsSerializer (serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('news', 'author', 'text')
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    news = serializers.SlugRelatedField(
+        slug_field='title',
+        read_only=True,
+    )
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True,
+    )
+
+    class Meta:
+        model = Like
+        fields = ('news', 'author')
