@@ -1,6 +1,6 @@
-from django.urls import include, path, re_path
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-
+from djoser.views import UserViewSet
 
 from .views import NewsViewSet, CommentsViewSet
 from django.conf import settings
@@ -14,15 +14,10 @@ router_v1.register(
     CommentsViewSet,
     basename='comments',
 )
-# router_v1.register(
-#     r'news/(?P<news_id>\d+)/like',
-#     LikeViewSet,
-#     basename='like',
-# )
-
 
 urlpatterns = [
     path('', include(router_v1.urls)),
-    path('auth/', include('djoser.urls')),
+    path('auth/register/', UserViewSet.as_view({'post': 'create'}), name="register"),
     path('auth/', include('djoser.urls.jwt')),
+    path('auth/', include('djoser.urls.authtoken')),
 ]

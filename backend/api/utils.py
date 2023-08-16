@@ -11,7 +11,7 @@ def add_or_del_like(self, **kwargs):
     user_id = self.request.user.id
     news_id = kwargs['id']
     like = model.objects.filter(user_id=user_id, news_id=news_id)
-    if request.method == 'DELETE':
+    if like:
         like.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     else:
