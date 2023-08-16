@@ -27,7 +27,6 @@ class News(models.Model):
         db_index=True,
         verbose_name='Дата публикации'
     )
-    likes = models.IntegerField(default=0)
 
     class Meta:
         ordering = ('-id',)

@@ -51,11 +51,20 @@ class NewsSerializer(serializers.ModelSerializer):
         slug_field='username',
         read_only=True,
     )
-    comments = serializers.StringRelatedField(many=True)
+    total_comments = serializers.SerializerMethodField()
+    total_like = serializers.SerializerMethodField()
 
     class Meta:
         model = News
-        fields = ('author', 'title', 'text', 'comments')
+        fields = ('author', 'title', 'text', 'total_comments', 'total_like')
+
+    def get_total_comments(self, obj):
+        news_id = obj.pk
+        return Comment.objects.filter(news_id=news_id).count()
+
+    def get_total_like(self, obj):
+        news_id = obj.pk
+        return Like.objects.filter(news_id=news_id).count()
 
 
 class CreatNewsSerializer(NewsSerializer):
