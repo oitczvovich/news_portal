@@ -1,28 +1,14 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-from rest_framework.decorators import api_view, action, permission_classes
+from rest_framework.decorators import action, permission_classes
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework import (
-    filters,
-    permissions,
-    status,
-    viewsets,
-)
+from rest_framework import status, viewsets
 
-from .permissions import (
-    IsAdmin,
-    IsAdminOrAuthor,
-    IsOwnerOrReadOnly
-)
-
+from comments.models import Like
 from news.models import News
-from user.models import User
-from comments.models import Comment, Like
-from .pagination import PageNumberPagination
+from .permissions import IsAdminOrAuthor
+from .pagination import CommentsPagination
 from .serializers import (
     NewsSerializer,
-    UserRegistrSerializer,
     CommentsSerializer,
     CreatNewsSerializer,
     LikeSerializer
@@ -80,6 +66,7 @@ class NewsViewSet(viewsets.ModelViewSet):
 class CommentsViewSet(viewsets.ModelViewSet):
     http_method_names = ('get', 'post', 'delete')
     serializer_class = CommentsSerializer
+    pagination_class = CommentsPagination
 
     def get_queryset(self):
         news = get_object_or_404(News, pk=self.kwargs.get('news_id'))
