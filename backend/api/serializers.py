@@ -58,7 +58,14 @@ class NewsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ('author', 'title', 'text', 'comments', 'total_comments', 'total_like')
+        fields = (
+            'author',
+            'title',
+            'text',
+            'comments',
+            'total_comments',
+            'total_like'
+        )
 
     def get_total_comments(self, obj):
         news_id = obj.pk
