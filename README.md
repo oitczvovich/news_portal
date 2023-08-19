@@ -75,6 +75,10 @@ sudo docker-compose exec backend python manage.py collectstatic --noinput
 ```
 sudo docker-compose exec backend python manage.py createsuperuser
 ``` 
+
+- Создание пользователя:
+
+
 ### Проект
 Работает по адресу http://158.160.31.83/
 superuser : super@mail.ru
