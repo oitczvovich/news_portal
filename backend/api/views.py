@@ -32,10 +32,11 @@ class NewsViewSet(viewsets.ModelViewSet):
         return NewsSerializer
 
     def get_permissions(self):
-        if self.action in ('destroy', 'update',):
+        if self.action in ('destroy', 'update', 'create'):
             return (IsAdminOrAuthor(),)
         return super().get_permissions()
 
+    @permission_classes([permissions.IsAuthenticated])
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 

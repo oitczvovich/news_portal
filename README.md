@@ -286,7 +286,7 @@ code HTTP - 204
 Работает по адресу:
 
 http://158.160.31.83/<br>
-http://158.160.31.83/redoc/ - документация. <br>
+http://158.160.31.83/redoc/ - документация.<br>
 superuser : super@mail.ru<br>
 username: SuperUser<br>
 password: super342rf364g4645<br>

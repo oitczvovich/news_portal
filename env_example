@@ -1,0 +1,10 @@
+SECRET_KEY=
+SIZE_COMMENTS_PAGINATION= Указать количество объектов для пагинации
+
+DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
+DB_NAME= # имя базы данных
+POSTGRES_USER= # логин для подключения к базе данных
+POSTGRES_PASSWORD= # пароль для подключения к БД (установите свой)
+DB_HOST= # название сервиса (контейнера)
+DB_PORT=5432 
+CSRF_TRUSTED_ORIGINS='http://*.localhost' #указать IP или адрес сайта вместо Localhost 

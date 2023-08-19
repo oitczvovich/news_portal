@@ -18,7 +18,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='secret_key')
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    'CSRF_TRUSTED_ORIGINS',
+    default='http://*.localhost'
+    )
 
 # Application definition
 
@@ -183,4 +186,3 @@ SWAGGER_SETTINGS = {
    }
 }
 
-CSRF_TRUSTED_ORIGINS = ['http://*.localhost']
