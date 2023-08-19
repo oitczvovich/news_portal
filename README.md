@@ -76,14 +76,220 @@ sudo docker-compose exec backend python manage.py collectstatic --noinput
 sudo docker-compose exec backend python manage.py createsuperuser
 ``` 
 
-- Создание пользователя:
+### Основные эндпоинты
+http://158.160.31.83/ - точка входа
+http://158.160.31.83/redoc/ - документация.
+
+
+#### Регистрация пользователя.
+`POST` http://158.160.31.83/api/v1/
+```
+{
+  "username": "string",
+  "email": "user@example.com",
+  "password": "string"
+}
+```
+#### Получение JWT-токена.
+`POST` http://158.160.31.83/api/v1/auth/jwt/create/
+```
+{
+  "email": "string",
+  "password": "string"
+}
+```
+### Новости
+
+http://158.160.31.83/api/v1/
+
+#### Список всех новостей.
+Права доступа: Все пользователи.
+
+`GET` http://158.160.31.83/api/v1/news/  - получить список всех новостий.
+ 
+Responses
+
+``` 
+{
+  "count": 0,
+  "next": "http://example.com",
+  "previous": "http://example.com",
+  "results": [
+    {
+      "author": "",
+      "title": "string",
+      "text": "string",
+      "comments": [
+        "string"
+      ],
+      "total_comments": "string",
+      "total_like": "string"
+    }
+  ]
+}
+```
+
+#### Создать новость
+`POST` http://158.160.31.83/api/v1/news/ - создать новость.
+
+Права доступа: Только Аутентифицированный пользователь.
+
+```
+{
+  "title": "string",
+  "text": "string"
+}
+```
+
+Responses
+```
+{
+  "author": "string",
+  "title": "string",
+  "text": "string"
+}
+```
+
+#### Получить определенную новость.
+
+`GET` http://158.160.31.83/api/v1/news/{id}
+    
+Права доступа: Все пользователи.
+
+Responses
+```
+{
+  "author": "",
+  "title": "string",
+  "text": "string",
+  "comments": [
+    "string"
+  ],
+  "total_comments": "string",
+  "total_like": "string"
+}
+```
+
+#### Изменить новость.
+`PUT` http://158.160.31.83/api/v1/news/{id}
+
+Права доступа: Только автор или администратор.
+
+```
+{
+  "title": "string",
+  "text": "string"
+}
+```
+
+Responses
+```
+{
+  "author": "",
+  "title": "string",
+  "text": "string"
+}
+```
+#### Удалить новость. 
+`DELETE` http://158.160.31.83/api/v1/news/{id}
+
+Только автор или администратор.
+
+Responses
+```
+code HTTP - 204
+```
+
+#### Поставить лайк к новости.
+
+`GET` http://158.160.31.83/api/v1/news/{id}/like/
+
+Права доступа: Только Аутентифицированный пользователь.
+
+```
+Ставиться или снимается лайк.
+```
+
+### Комментарии.
+
+#### Плучить все комментарии к новости.
+
+`GET` http://158.160.31.83/api/v1/news/{news_id}/comments/
+
+Responses
+
+```
+{
+  "count": 0,
+  "next": "http://example.com",
+  "previous": "http://example.com",
+  "results": [
+    {
+      "news": "string",
+      "author": "string",
+      "text": "string"
+    }
+  ]
+}
+```
+
+#### Создать комментарий под новостью.
+
+`POST` http://158.160.31.83/api/v1/news/{news_id}/comments/
+
+Права доступа: Только Аутентифицированный пользователь.
+
+```
+{
+  "text": "string"
+}
+```
+
+Responses
+```
+{
+  "news": "string",
+  "author": "string",
+  "text": "string"
+}
+```
+
+#### Получить определенные комментарий.
+
+`GET` http://158.160.31.83/api/v1/news/{news_id}/comments/{id}
+
+Права доступа: Только Аутентифицированный пользователь.
+
+Responses
+```
+{
+  "news": "string",
+  "author": "string",
+  "text": "string"
+}
+```
+#### Удалить определенные комментарий.
+
+`DELETE` http://158.160.31.83/api/v1/news/{news_id}/comments/{id}
+
+Права доступа: Только автор или администратор.
+
+Responses
+
+```
+code HTTP - 204
+```
+
 
 
 ### Проект
-Работает по адресу http://158.160.31.83/
-superuser : super@mail.ru
-username: SuperUser
-password: super342rf364g4645
+Работает по адресу:
+
+http://158.160.31.83/<br>
+http://158.160.31.83/redoc/ - документация. <br>
+superuser : super@mail.ru<br>
+username: SuperUser<br>
+password: super342rf364g4645<br>
 
 
 
