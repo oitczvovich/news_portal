@@ -8,6 +8,8 @@ from user.models import User
 from news.models import News
 from comments.models import Comment, Like
 
+FORMAT_TIME = "%Y.%m.%d - %H:%M"
+
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -53,12 +55,14 @@ class NewsSerializer(serializers.ModelSerializer):
     )
     total_comments = serializers.SerializerMethodField()
     total_like = serializers.SerializerMethodField()
-
     comments = serializers.StringRelatedField(many=True)
+    pub_date = serializers.DateTimeField(required=False, format=FORMAT_TIME)
 
     class Meta:
         model = News
         fields = (
+            'id',
+            'pub_date',
             'author',
             'title',
             'text',
@@ -84,18 +88,15 @@ class CreatNewsSerializer(NewsSerializer):
 
 
 class CommentsSerializer (serializers.ModelSerializer):
-    news = serializers.SlugRelatedField(
-        slug_field='text',
-        read_only=True,
-    )
     author = serializers.SlugRelatedField(
         slug_field='username',
         read_only=True,
     )
+    pub_date = serializers.DateTimeField(required=False, format=FORMAT_TIME)
 
     class Meta:
         model = Comment
-        fields = ('news', 'author', 'text')
+        fields = ('pub_date', 'author', 'text')
 
 
 class LikeSerializer(serializers.ModelSerializer):
